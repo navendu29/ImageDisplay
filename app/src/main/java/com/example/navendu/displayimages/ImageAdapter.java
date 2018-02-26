@@ -50,9 +50,6 @@ public class ImageAdapter  extends RecyclerView.Adapter<ImageAdapter.ImageViewHo
 
         Resources resources = mContext.getResources();
 
-   //     final int resourceId = resources.getIdentifier(item.getFlag(), "drawable",
-     //           mContext.getPackageName());
-        // Drawable toShow=  resources.getDrawable(resourceId);
        Picasso.with(mContext)
                 .load(item.getFlag())
                 .resize(300,300)

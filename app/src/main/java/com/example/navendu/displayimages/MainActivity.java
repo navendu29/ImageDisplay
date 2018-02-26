@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
             final Gson gson =
                     new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
             final Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-
-                    //.addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
             ImageService = retrofit.create(ImageService.class);
@@ -95,12 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
                     ImageAdapter studentsAdapter = new ImageAdapter(ww,getApplicationContext());
                     recyclerView.setAdapter(studentsAdapter);
-
-
-                //    mLayoutManager = new LinearLayoutManager(getApplicationContext());
-
-                  //  Log.v("EngiTeamAct",String.valueOf(listToShowcc.get(0).imageName));
-
 
 
 
