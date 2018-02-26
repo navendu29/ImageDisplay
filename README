@@ -1,0 +1,10 @@
+App is used for showing multiple things in android
+
+1.Fetch data from API http://www.androidbegin.com/tutorial/jsonparsetutorial.txt .
+2.Displays the Images fetched using Picasso Library.
+3.Dislays the details along with Images in a recycler view.
+4.Clicking on an Image takes to an activity where the image sis shown enlarged
+5.On pressing back button multple image view is restored.
+
+
+The video is also attached for demo.
