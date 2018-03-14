@@ -26,6 +26,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Observer;
+import rx.Scheduler;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -54,63 +55,106 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.create();
             final Gson gson =
                     new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
             final Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addConverterFactory(GsonConverterFactory.create(gson)).addCallAdapterFactory(rxAdapter)
                     .build();
             ImageService = retrofit.create(ImageService.class);
 
-            Call<ImageDisplay> call=  ImageService.getImages();
+//            Call<ImageDisplay> call=  ImageService.getImages();
+        Observable<ImageDisplay> call = ImageService.getImages();
+         call
+                .subscribeOn(Schedulers.io()) // optional if you do not wish to override the default behavior
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ImageDisplay>() {
+             @Override
+             public void onCompleted() {
 
+             }
 
-           call.enqueue(new Callback<ImageDisplay>() {
-                @Override
-                public void onResponse(Call<ImageDisplay> call, Response<ImageDisplay> response) {
+             @Override
+             public void onError(Throwable e) {
 
+             }
 
-                   ImageDisplay g= response.body();
-
-
-           List<Worldpopulation>  hd=(ArrayList<Worldpopulation>) g.getWorldpopulation();
-
-
-           ww=new ArrayList<Worldpopulation>();
-           for(Worldpopulation k:hd)
-           {
-               ww.add(k);
-
-           }
+             @Override
+             public void onNext(ImageDisplay g) {
 
 
 
+                 List<Worldpopulation>  hd=(ArrayList<Worldpopulation>) g.getWorldpopulation();
 
 
-                    recyclerView = findViewById(R.id.recycler_view);
+                 ww=new ArrayList<Worldpopulation>();
+                 for(Worldpopulation k:hd)
+                 {
+                     ww.add(k);
 
-
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL, false));
-
-                    ImageAdapter studentsAdapter = new ImageAdapter(ww,getApplicationContext());
-                    recyclerView.setAdapter(studentsAdapter);
+                 }
 
 
 
 
 
-                }
+                 recyclerView = findViewById(R.id.recycler_view);
 
 
+                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL, false));
+
+                 ImageAdapter studentsAdapter = new ImageAdapter(ww,getApplicationContext());
+                 recyclerView.setAdapter(studentsAdapter);
+             }
+         });
 
 
-
-
-                @Override
-                public void onFailure(Call<ImageDisplay> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
-
-                }
-            });
+//           call.enqueue(new Callback<ImageDisplay>() {
+//                @Override
+//                public void onResponse(Call<ImageDisplay> call, Response<ImageDisplay> response) {
+//
+//
+//                   ImageDisplay g= response.body();
+//
+//
+//           List<Worldpopulation>  hd=(ArrayList<Worldpopulation>) g.getWorldpopulation();
+//
+//
+//           ww=new ArrayList<Worldpopulation>();
+//           for(Worldpopulation k:hd)
+//           {
+//               ww.add(k);
+//
+//           }
+//
+//
+//
+//
+//
+//                    recyclerView = findViewById(R.id.recycler_view);
+//
+//
+//                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL, false));
+//
+//                    ImageAdapter studentsAdapter = new ImageAdapter(ww,getApplicationContext());
+//                    recyclerView.setAdapter(studentsAdapter);
+//
+//
+//
+//
+//
+//                }
+//
+//
+//
+//
+//
+//
+//                @Override
+//                public void onFailure(Call<ImageDisplay> call, Throwable t) {
+//                    Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
 
 
 

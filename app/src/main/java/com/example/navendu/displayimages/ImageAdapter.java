@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -62,8 +63,10 @@ public class ImageAdapter  extends RecyclerView.Adapter<ImageAdapter.ImageViewHo
 
                 Intent i=new Intent(mContext,Enlarge.class);
                 i.putExtra("id",item.getFlag()+"");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 //i.putExtra("name", user.getUserFullName());
                 mContext.startActivity(i);
+//                Toast.makeText(mContext,"Clicked",Toast.LENGTH_SHORT).show();
 
 
 
